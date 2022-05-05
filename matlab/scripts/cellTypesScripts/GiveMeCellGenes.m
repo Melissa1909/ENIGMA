@@ -1,4 +1,4 @@
-function cellGenes = GiveMeCellGenes(c)
+function cellGenes = GiveMeCellGenes(c, outDir)
 %----------------------------------------------------------------------
 % AUTHOR: MELISSA THALHAMMER
 %
@@ -6,12 +6,13 @@ function cellGenes = GiveMeCellGenes(c)
 % data and idea from Li, Seidlitz 2021
 %
 %---INPUTS:
-% * c: cell type of list ["Astro", "Endo", "Neuro-Ex", "Neuro-In", "Micro", "Oligo", "OPC", "Per"]
+% * c: cell type of list ["Astro", "Endo", "Neuro-Ex", "Neuro-In", "Micro",
+%       "Oligo", "OPC", "Per"].
+% * outDir: path where data should be saved.
 
 %----------------------------------------------------------------------
 % Read in data and check inputs
 cell_raw = readtable('cell_types_Li-Seidlitz2021_melissa.csv', 'ReadVariableNames',0);
-outpath = ('C:\Users\Acer\Documents\Studium\PhD\01_MA_preterm_gene-expression\ENIGMA\matlab\results\cellTypes');
 
 if nargin < 1
     error('You must specify a cell type from the given list...');
@@ -50,6 +51,6 @@ cellGenes = cellGenes(~vb);
 cellGenes = unique(cellGenes,'stable');
      
 % save output
-outname=fullfile(outpath,c);
+outname=fullfile(outDir,c);
 writematrix(cellGenes,outname);
      

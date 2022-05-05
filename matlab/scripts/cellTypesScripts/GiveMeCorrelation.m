@@ -2,7 +2,7 @@ function corr_coeffs = GiveMeCorrelation(measure, cellGenes, genes_all)
 %----------------------------------------------------------------------
 % AUTHOR: MELISSA THALHAMMER
 %
-% Performs Spearman correlation: parametric and pspin based on ENIGMA
+% Performs Spearman correlation: parametric one and pspin based on ENIGMA
 % toolbox. 
 %
 %---INPUTS:
