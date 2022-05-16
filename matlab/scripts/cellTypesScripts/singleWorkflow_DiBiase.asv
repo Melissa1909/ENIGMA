@@ -31,8 +31,7 @@ if celltype=="Subplate"
     vb = cellfun(@isempty, cellGenes);
     cellGenes = cellGenes(~vb);
     % remove duplicates
-    cellGenes = unique(cellGenes,'stable');
-    cellGenes = convertCharsToStrings(cellGenes);
+    cellGenes_test = unique(cellGenes,'stable');
 else
     cellGenes = GiveMeCellGenes(celltype, outDir);
 end

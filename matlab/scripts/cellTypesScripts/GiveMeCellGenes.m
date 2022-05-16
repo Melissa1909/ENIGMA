@@ -26,9 +26,10 @@ for rows=1:height(cell_raw)
     currentLine=cell_raw(rows,:);
     if (strcmp(currentLine.Var4,c))  
         cellRow(rows,1)=1;
-        cellRow = logical(cellRow);
+        %cellRow = logical(cellRow);
     end
 end
+cellRow = logical(cellRow);
 
 % store all genes that belong to the current celltype
 helperGenes={};
