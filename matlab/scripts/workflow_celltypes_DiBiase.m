@@ -34,15 +34,51 @@ celltypes=["Astro", "Endo", "Neuro-Ex", "Neuro-In", "Micro", "Oligo", "OPC", "Pe
 % test
 %singleWorkflow_DiBiase(measures,celltype,genes_all,outDir);
 
+% for measureNum=1:length(measures)
+%     measure=measures(measureNum);
+% 
+%     for cellNum=1:length(celltypes)
+%         celltype = celltypes(cellNum);
+%         fprintf('STARTING WITH NEW CELLTYPE: %s\n', celltype);
+% 
+%         singleWorkflow_DiBiase(measure,celltype,genes_all,outDir);
+%     end
+% end
+
+
+
+%% summarize all results into one csv
+
+variable_names_types = [["measure", "string"]; ...
+			["celltype", "string"]; ...
+			["Spearman_rho", "double"]; ...
+			["p", "double"]; ...
+			["p_spin", "double"]];
+
+summaryFile = table('Size', [length(celltypes)*2,size(variable_names_types,1)],...
+    'VariableNames',variable_names_types(:,1),...
+    'VariableTypes',variable_names_types(:,2));
+
+index = 1;
 for measureNum=1:length(measures)
     measure=measures(measureNum);
 
     for cellNum=1:length(celltypes)
         celltype = celltypes(cellNum);
-        fprintf('STARTING WITH NEW CELLTYPE: %s\n', celltype);
 
-        singleWorkflow_DiBiase(measure,celltype,genes_all,outDir);
+        % load all files containing correlation results
+        fileNameOut = sprintf('correlation_cellTypeMean_%s_%s.csv',measure,celltype);
+        fileNameOut = fullfile(outDir,fileNameOut);
+        file = readmatrix(fileNameOut);
+        summaryFile(index,:)={measure,celltype,file(1,1),file(1,2),file(1,3)};
+        index = index+1;
     end
 end
 
+% save
+fileNameSummary = sprintf('summary_correlation_analysis.csv');
+fileNameSummary = fullfile(outDir,fileNameSummary);
+writetable(summaryFile,fileNameSummary);
+
+%% DONE!
 fprintf("Done!");
