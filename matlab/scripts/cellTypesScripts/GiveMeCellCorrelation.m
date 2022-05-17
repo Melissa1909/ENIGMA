@@ -17,9 +17,10 @@ function corr_coeffs = GiveMeCellCorrelation(measure,expression)
 
 % Define measure
 if measure == "CT"
-    corticalData = readmatrix('T_lhrh_thickness_term-preterm.csv');
+    %corticalData = readmatrix('T_lhrh_thickness_term-preterm.csv');
+    corticalData = readmatrix('T_FT-PT_newSPSS_thickness.csv');
 elseif measure == "GYR" 
-    corticalData = readmatrix('T_lhrh_gyrification_term-preterm.csv');
+    %corticalData = readmatrix('T_lhrh_gyrification_term-preterm.csv');
 else
     fprintf('Please specify a cortical measure...')
 end

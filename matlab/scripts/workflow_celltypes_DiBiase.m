@@ -26,28 +26,28 @@ genes_all = readtable('expression_brainorder.csv','ReadVariableNames',0);
 genelabels = genes_all.Var1;
 genes = removevars(genes_all, "Var1");
 
-measures = ["CT", "GYR"];
-%measures = ["CT"];
+%measures = ["CT", "GYR"];
+measures = ["CT"];
 %celltype = "Subplate";
 celltypes=["Astro", "Endo", "Neuro-Ex", "Neuro-In", "Micro", "Oligo", "OPC", "Per", "Subplate"];
 
 % test
 %singleWorkflow_DiBiase(measures,celltype,genes_all,outDir);
 
-% for measureNum=1:length(measures)
-%     measure=measures(measureNum);
-% 
-%     for cellNum=1:length(celltypes)
-%         celltype = celltypes(cellNum);
-%         fprintf('STARTING WITH NEW CELLTYPE: %s\n', celltype);
-% 
-%         singleWorkflow_DiBiase(measure,celltype,genes_all,outDir);
-%     end
-% end
+for measureNum=1:length(measures)
+    measure=measures(measureNum);
+
+    for cellNum=1:length(celltypes)
+        celltype = celltypes(cellNum);
+        fprintf('STARTING WITH NEW CELLTYPE: %s\n', celltype);
+
+        singleWorkflow_DiBiase(measure,celltype,genes_all,outDir);
+    end
+end
 
 
 
-%% summarize all results into one csv
+%% summarize all results into one summary file
 
 variable_names_types = [["measure", "string"]; ...
 			["celltype", "string"]; ...
@@ -72,6 +72,7 @@ for measureNum=1:length(measures)
         file = readmatrix(fileNameOut);
         summaryFile(index,:)={measure,celltype,file(1,1),file(1,2),file(1,3)};
         index = index+1;
+        
     end
 end
 
