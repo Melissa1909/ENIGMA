@@ -1,15 +1,18 @@
 clear; clc;
+startup;
 addpath(genpath('C:\Users\Acer\Documents\Studium\PhD\01_MA_preterm_gene-expression/ENIGMA/matlab/'));
-
+addpath(genpath('C:\Users\Acer\Documents\Studium\PhD\01_MA_preterm_gene-expression/ENIGMA/matlab/data_melissa'));
+addpath(genpath('C:\Users\Acer\Documents\Studium\PhD\sw\BrainSpace-0.1.2'))
 
 % Import data
-genes_all = readtable('expression_brainorder.csv','ReadVariableNames',0);
+genes_all = readtable('expression_brainorder_lh-mirror.csv','ReadVariableNames',0);
 genelabels = genes_all.Var1;
 genes = removevars(genes_all, "Var1");
 
-addpath(genpath('C:\Users\Acer\Documents\Studium\PhD\01_MA_preterm_gene-expression/ENIGMA/matlab/data_melissa'));
-CT = readmatrix('T_lhrh_thickness_term-preterm.csv');
-GYR = readmatrix('T_lhrh_gyrification_term-preterm.csv');
+CT_all = readtable('thickness_tvals_multipleRegression_combatCorr.csv');
+CT = CT_all.tval;
+GYR_all = readtable('gyrification_tvals_multipleRegression_combatCorr.csv');
+GYR = GYR_all.tval;
 
 %% correlation
 numGenes = 10; %lower the number for debugging and test purposes
@@ -22,8 +25,8 @@ for g = 1:numGenes
     fprintf('Performing correlation for gene %d\n', g);
     geneHere = genes(g,:);
     geneHere = table2array(geneHere);
-    [rho,pval] = corr(CT',geneHere','Type','Spearman');
-    pspin = spin_test(CT',geneHere','surface_name', 'fsa5', 'parcellation_name', 'aparc', 'n_rot', 1000,'type', 'spearman');
+    [rho,pval] = corr(CT,geneHere','Type','Spearman');
+    pspin = spin_test(CT,geneHere','surface_name', 'fsa5', 'parcellation_name', 'aparc', 'n_rot', 1000,'type', 'spearman');
     
     %save output
     corr_coeffs_CT(g,2) = rho;

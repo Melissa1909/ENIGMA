@@ -22,12 +22,12 @@ outDir = fullfile(projectDir, 'results/cellTypes/');
 
 startup;
 
-genes_all = readtable('expression_brainorder.csv','ReadVariableNames',0);
+genes_all = readtable('expression_brainorder_lh-mirror.csv','ReadVariableNames',0);
 genelabels = genes_all.Var1;
 genes = removevars(genes_all, "Var1");
 
-%measures = ["CT", "GYR"];
-measures = ["CT"];
+measures = ["CT", "GYR"];
+%measures = ["GYR"];
 %celltype = "Subplate";
 celltypes=["Astro", "Endo", "Neuro-Ex", "Neuro-In", "Micro", "Oligo", "OPC", "Per", "Subplate"];
 
