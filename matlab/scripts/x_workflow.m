@@ -20,19 +20,29 @@ numGenes = 10; %lower the number for debugging and test purposes
 
 corr_coeffs_CT = NaN(numGenes,6);
 
+measures = ["CT", "GYR"];
+for measureNum=1:length(measures)
+    measure=measures(measureNum);
 
-for g = 1:numGenes
-    fprintf('Performing correlation for gene %d\n', g);
-    geneHere = genes(g,:);
-    geneHere = table2array(geneHere);
-    [rho,pval] = corr(CT,geneHere','Type','Spearman');
-    pspin = spin_test(CT,geneHere','surface_name', 'fsa5', 'parcellation_name', 'aparc', 'n_rot', 1000,'type', 'spearman');
-    
-    %save output
-    corr_coeffs_CT(g,2) = rho;
-    corr_coeffs_CT(g,3) = pval;
-    corr_coeffs_CT(g,5) = pspin;
+    for g = 1:numGenes
+        fprintf('Performing correlation for gene %d\n', g);
+        geneHere = genes(g,:);
+        geneHere = table2array(geneHere);
+        [rho,pval] = corr(CT,geneHere','Type','Spearman');
+        pspin = spin_test(CT,geneHere','surface_name', 'fsa5', 'parcellation_name', 'aparc', 'n_rot', 1000,'type', 'spearman');
+        
+        %save output
+        corr_coeffs_CT(g,2) = rho;
+        corr_coeffs_CT(g,3) = pval;
+        corr_coeffs_CT(g,5) = pspin;
+    end
+   
 end
+
+
+
+
+
 
 
 %% MCC old
