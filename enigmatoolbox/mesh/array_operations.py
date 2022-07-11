@@ -631,7 +631,7 @@ def propagate_labeling(surf, labeling, no_label=np.nan, mask=None, alpha=0.99,
 
     # propagation
     lab_dist_perv = lab_dist
-    for i in range(n_iter):
+    for _ in range(n_iter):
         lab_dist = graph_matrix.dot(lab_dist) + lab_static
 
         if np.linalg.norm(lab_dist - lab_dist_perv, 'fro') < tol:
@@ -756,7 +756,7 @@ def smooth_array(surf, point_data, n_iter=5, mask=None, kernel='gaussian',
     else:
         spd = pd.astype(np.float)
 
-    for i in range(n_iter):
+    for _ in range(n_iter):
         wp = w.dot(spd)
         spd *= retain
         spd += wp

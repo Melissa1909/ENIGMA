@@ -1,6 +1,4 @@
-"""
-Pipeline for VTK filters.
-"""
+"""Pipeline for VTK filters."""
 
 # Author: Oualid Benkarim <oualid.benkarim@mcgill.ca>
 # License: BSD 3 clause
@@ -47,9 +45,7 @@ def connect(ftr0, ftr1, port0=0, port1=0, add_conn=False):
     -------
     ftr1 : BSAlgorithm
         Returns (wrapped) `frt1` after connecting it with the input filter.
-
     """
-
     if isinstance(ftr0, BSAlgorithm) and port0 >= ftr0.nop:
         raise ValueError("'{0}' only has {1} output ports.".
                          format(ftr0.__vtkname__, ftr0.nop))
@@ -58,7 +54,7 @@ def connect(ftr0, ftr1, port0=0, port1=0, add_conn=False):
         raise ValueError("'{0}' only accepts {1} input ports.".
                          format(ftr1.__vtkname__, ftr1.nip))
 
-    if add_conn is True or type(add_conn) == int:
+    if add_conn is True or isinstance(add_conn, int):
         if ftr1.nip > 1:
             raise ValueError("No support yet for 'add_conn' when filter "
                              "has more than 1 input ports.")
@@ -69,7 +65,7 @@ def connect(ftr0, ftr1, port0=0, port1=0, add_conn=False):
                              "accept multiple connections.".
                              format(ftr1.nip, ftr1.__vtkname__))
 
-        if type(add_conn) == int:
+        if isinstance(add_conn, int):
             if not hasattr(ftr1, 'GetUserManagedInputs') or \
                     ftr1.GetUserManagedInputs() == 0:
                 raise ValueError("Input port {0} of '{1}' does not accept "
@@ -81,7 +77,7 @@ def connect(ftr0, ftr1, port0=0, port1=0, add_conn=False):
         if add_conn is True:
             # Connection for only 1 input port. Not tested.
             ftr1.AddInputConnection(port1, op)
-        elif type(add_conn) == int:
+        elif isinstance(add_conn, int):
             # Connection for only 1 input port. Not tested.
             ftr1.SetInputConnectionByNumber(add_conn, op)
         else:
@@ -91,7 +87,7 @@ def connect(ftr0, ftr1, port0=0, port1=0, add_conn=False):
         ftr0 = ftr0.VTKObject
         if add_conn is True:
             ftr1.AddInputData(ftr0)
-        elif type(add_conn) == int:
+        elif isinstance(add_conn, int):
             ftr1.SetInputDataByNumber(add_conn, ftr0)
         else:
             ftr1.SetInputDataObject(port1, ftr0)
@@ -120,13 +116,10 @@ def to_data(ftr, port=0):
         Returns the output of the filter. If port is -1 and number of output
         ports > 1, then return list of outputs.
 
-
     Notes
     -----
     Filters are automatically updated to get the output.
-
     """
-
     list_ports = [port] if port > -1 else range(ftr.nop)
     n_ports = len(list_ports)
     out = [None] * n_ports
@@ -163,9 +156,7 @@ def get_output(ftr, as_data=True, update=True, port=0):
     poly : BSAlgorithm or BSDataObject
         Returns filter or its output. If port is -1, returns all outputs in a
         list if ``as_data == True``.
-
     """
-
     if as_data:
         return to_data(ftr, port=port)
 
@@ -199,6 +190,7 @@ def get_output(ftr, as_data=True, update=True, port=0):
 
 
 def _map_input_filter(f):
+    """Some comments here."""
     if not isinstance(f, (list, tuple)):
         return f, 0  # assume is only filter
 
@@ -214,6 +206,7 @@ def _map_input_filter(f):
 
 
 def _map_output_filter(f):
+    """Some comments here."""
     if not isinstance(f, (list, tuple)):
         return False, 0, f  # assume is only filter
 
@@ -231,6 +224,7 @@ def _map_output_filter(f):
 
 
 def _map_intermediate_filter(f):
+    """Some comments here."""
     if not isinstance(f, (list, tuple)):
         return False, 0, f, 0  # assume is only filter
 
@@ -337,10 +331,9 @@ def serial_connect(*filters, as_data=True, update=True, port=0):
     >>> serial_connect(ps, dn, sf)
     <brainspace.vtk_interface.wrappers.BSPolyData at 0x7f0134eee898>
     """
-
     prev_f, prev_op = _map_input_filter(filters[0])
 
-    for i, f1 in enumerate(filters[1:-1]):
+    for _, f1 in enumerate(filters[1:-1]):
         ic, ip, fi, op = _map_intermediate_filter(f1)
         prev_f = connect(prev_f, fi, port0=prev_op, port1=ip, add_conn=ic)
         prev_op = op

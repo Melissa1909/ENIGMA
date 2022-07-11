@@ -1,7 +1,5 @@
-
 # Author: Oualid Benkarim <oualid.benkarim@mcgill.ca>
 # License: BSD 3 clause
-
 
 from itertools import product as iter_prod
 
@@ -20,7 +18,6 @@ from ..datasets import load_fsa5, load_conte69, load_subcortical
 from ..utils.parcellation import subcorticalvertices
 
 from ..vtk_interface.decorators import wrap_input
-
 
 orientations = {'medial': (0, -90, -90),
                 'lateral': (0, 90, 90),
@@ -159,7 +156,6 @@ def build_plotter(surfs, layout, array_name=None, view=None, color_bar=None,
     names per entry. Actor and mapper keywords must also be broadcastable to
     the shape of `array_name`.
     """
-
     # Layout
     for k in np.unique(layout):
         if k not in surfs and k is not None:
@@ -488,13 +484,12 @@ def plot_cortical(array_name=None, surface_name='fsa5', color_bar=False,
     :func:`build_plotter`
     :func:`plot_surf`
     """
-
     if color_bar is True:
         color_bar = 'right'
 
-    if surface_name is "fsa5":
+    if surface_name == "fsa5":
         surf_lh, surf_rh = load_fsa5()
-    elif surface_name is "conte69":
+    elif surface_name == "conte69":
         surf_lh, surf_rh = load_conte69()
 
     surfs = {'lh': surf_lh, 'rh': surf_rh}
@@ -601,7 +596,6 @@ def plot_subcortical(array_name=None, ventricles=True, color_bar=False,
     :func:`build_plotter`
     :func:`plot_surf`
     """
-
     if color_bar is True:
         color_bar = 'right'
 
