@@ -1,8 +1,18 @@
+% 
+% AUTHOR: MELISSA THALHAMMER
+%
+% This script uses Gyr and CTh group difference between preterm and
+% term-born subjects and correlates these Tvals with gene expression.
+%
+% TO DO: clean the script so that paths go to analysis2/data
+
+
 clear; clc;
 startup;
-addpath(genpath('C:\Users\Acer\Documents\Studium\PhD\01_MA_preterm_gene-expression/ENIGMA/matlab/'));
-addpath(genpath('C:\Users\Acer\Documents\Studium\PhD\01_MA_preterm_gene-expression/ENIGMA/matlab/data_melissa'));
-addpath(genpath('C:\Users\Acer\Documents\Studium\PhD\sw\BrainSpace-0.1.2'))
+working_dir='C:\Users\Acer\Documents\Studium\PhD\01_MA_preterm_gene-expression/ENIGMA/matlab/';
+addpath(genpath(working_dir));
+addpath(genpath(fullfile(working_dir, 'data_melissa')));
+addpath(genpath('C:\Users\Acer\Documents\Studium\PhD\sw\BrainSpace-0.1.2'));
 
 % Import data
 genes_all = readtable('expression_brainorder_lh-mirror.csv','ReadVariableNames',0);
@@ -18,10 +28,8 @@ GYR = GYR_all.tval;
 numGenes = 100; %lower the number for debugging and test purposes
 %numGenes = height(genes);
 
-%measures = ["CT", "GYR"];
 measures = [CT, GYR];
 for measureNum=1:width(measures)
-%for measure=
     measure=measures(:,measureNum);
     corr_coeffs = NaN(numGenes,6);
 
@@ -30,8 +38,8 @@ for measureNum=1:width(measures)
         geneHere = genes(g,:);
         geneHere = table2array(geneHere);
         [rho,pval] = corr(measure,geneHere','Type','Spearman');
-        pspin = spin_test(measure,geneHere','surface_name', 'fsa5', 'parcellation_name', 'aparc', 'n_rot', 1000,'type', 'spearman');
-        
+        [pspin, r_dist] = spin_test(measure,geneHere','surface_name', 'fsa5', 'parcellation_name', 'aparc', 'n_rot', 1000,'type', 'spearman');
+
         %save output
         corr_coeffs(g,2) = rho;
         corr_coeffs(g,3) = pval;
@@ -59,7 +67,7 @@ for measureNum=1:width(measures)
     elseif measureNum == 2
         m = "GYR";
     end
-    writetable(corr_coeffs_sorted, fullfile('C:\Users\Acer\Documents\Studium\PhD\01_MA_preterm_gene-expression\Melissa1909_ENIGMA\matlab\results\p_spin_corr\',m));
+    %writetable(corr_coeffs_sorted, fullfile(working_dir, 'results\p_spin_corr\',m));
 
 
 end

@@ -20,3 +20,4 @@ dist
 .test*
 
 .readthedocs.yml
+/matlab/results
